@@ -7,7 +7,6 @@ package com.example.repository.impl;
 
 import com.example.domain.User;
 import com.example.repository.UserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -45,15 +44,21 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
-    public User get(int id) {
+    public User getUserById(int userID) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("id", id));
+        criteria.add(Restrictions.eq("userID", userID));
         List<User> users = (List<User>) criteria.list();
         return users.get(0);
     }
     
-    /* TEST THAT */
-    
+    @Override
+    public User getUserByUsername(String username) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("username", username));
+        List<User> users = (List<User>) criteria.list();
+        return users.get(0);
+    }
+       
     @Override
     public void add(User user) {
         getSession().saveOrUpdate(user);
@@ -66,8 +71,8 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
-    public void delete(int id) {
-        User target = get(id);
+    public void delete(int userID) {
+        User target = getUserById(userID);
         getSession().delete(target);
     }
     

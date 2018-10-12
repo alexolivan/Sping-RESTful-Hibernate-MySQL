@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,41 +27,35 @@ public class UsersController {
     
     @Autowired
     private UserService userService;
-    
-    public UsersController () {}
-    
-    public UsersController(UserService userService){
-        this.userService = userService;
-    }
-    
+        
     @RequestMapping(method = RequestMethod.GET, value = "/users")
     public @ResponseBody
     List<User> getAll() {
         return this.userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     public @ResponseBody
-    User getById(@PathVariable int id) {
-        return this.userService.getUserById(id);
+    User getByUsername(@PathVariable String username) {
+        return this.userService.getUserByUsername(username);
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<User> create(@RequestBody User user) {
         this.userService.add(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/update/{id}", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<User> update(@PathVariable int id, @RequestBody User user) {
-        user.setId(id);
+        user.setUserID(id);
         this.userService.update(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity<User> delete(@PathVariable int id) {
         this.userService.delete(id);

@@ -9,72 +9,71 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author alex
- */
+
 @Entity
 @Table(name = "users")
 public class User implements Serializable{
     
     // Properties JPA anotated
-    
     @Id
     @NotNull
-    @Column(name = "id")    
-    private int id;
+    @Column(name = "userID")    
+    private int userID;
     
     @NotNull
-    @Column(name = "username")
-    @Size(max = 100)    
-    private String username;    
+    @Column(name = "username", unique = true)
+    @Size(max = 100)
+    private String username;  
+    
+    @NotNull
+    @Column(name = "password")
+    @Size(max = 50)    
+    private String password;     
     
     @NotNull
     @Column(name = "fullname")
     @Size(max = 100)    
     private String fullname;    
     
-    @NotNull
-    @Column(name = "isSuper") 
-    private boolean isSuper;    
     
-    @NotNull
-    @Column(name = "isAdmin") 
-    private boolean isAdmin;     
-    
+    @ManyToOne
+    @JoinColumn(name = "roleID")
+    private Role userRole;
     
     // Constructors
     
-    public User(int id, String username, String fullname, Boolean isSuper, Boolean isAdmin){
-        this.id = id;
+    public User(int userID, String username, String password, String fullname, Role userRole){
+        this.userID = userID;
         this.username = username;
+        this.password = password;
         this.fullname = fullname;
-        this.isSuper = isSuper;
-        this.isAdmin = isAdmin;
+        this.userRole = userRole;
     }
     
-    public User(int id, String username) {
-        this.id = id;
-        this.username = username;        
+    public User(int userID, String username, String password, Role userRole) {
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
     }
 
     public User() {}
     
     // Setters and Getters
     
-    public int getId() {
-        return id;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getUsername() {
@@ -93,20 +92,20 @@ public class User implements Serializable{
         this.fullname = fullname;
     }
 
-    public boolean isIsSuper() {
-        return isSuper;
+    public String getPassword() {
+        return password;
     }
 
-    public void setIsSuper(boolean isSuper) {
-        this.isSuper = isSuper;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public boolean isIsAdmin() {
-        return isAdmin;
+    public Role getUserRole() {
+        return userRole;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setRoleID(Role userRole) {
+        this.userRole = userRole;
     }
     
     
@@ -115,11 +114,12 @@ public class User implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.userID);
         hash = 59 * hash + Objects.hashCode(this.username);
+        hash = 59 * hash + Objects.hashCode(this.password);        
         hash = 59 * hash + Objects.hashCode(this.fullname);        
-        hash = 59 * hash + Objects.hashCode(this.isSuper);
-        hash = 59 * hash + Objects.hashCode(this.isAdmin);
+        hash = 59 * hash + Objects.hashCode(this.userRole);
+
         return hash;
     }
 
@@ -135,13 +135,11 @@ public class User implements Serializable{
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.userID, other.userID)) {
             return false;
         } else {
         }
         return true;
-    }    
-    
-    
+    }       
     
 }

@@ -12,7 +12,7 @@
 
 
     <mvc:annotation-driven />
-    <context:component-scan base-package="com.pmg.pms.config com.pmg.pms.controller com.pmg.pms.domain com.pmg.pms.repository com.pmg.pms.repository.impl com.pmg.pms.service com.pmg.pms.service.impl" />
+    <context:component-scan base-package="com.example.auth com.example.auth.impl com.example.config com.example.controller com.example.domain com.example.repository com.example.repository.impl com.example.service com.example.service.impl" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
